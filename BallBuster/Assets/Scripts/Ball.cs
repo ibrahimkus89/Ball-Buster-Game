@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
     }
 
 
-    void changeThePrimaryStatus()
+    public void changeThePrimaryStatus()
     {
         Invoke("SetStatus",2f);
     }

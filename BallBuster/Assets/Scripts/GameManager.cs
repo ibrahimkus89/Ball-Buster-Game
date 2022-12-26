@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject BallThrower;
     [SerializeField] private GameObject BallSocket;
     [SerializeField] private GameObject NextBall;
+    private GameObject SelectedBall;
 
 
 
     void Start()
     {
         ktsys = Balls.Length;
-        BringTheBall();
+        BringTheBall(true);
     }
 
     
@@ -43,14 +44,58 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-           
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            SelectedBall.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            SelectedBall.transform.parent = null;
+            SelectedBall.GetComponent<Ball>().changeThePrimaryStatus();
+            BringTheBall(false);
+
         }
     }
 
-    void BringTheBall()
+    void BringTheBall(bool firstKrlm)
     {
-        Balls[poolIndex].transform.SetParent(BallThrower.transform);
-        Balls[poolIndex].transform.position = BallSocket.transform.position;
-        Balls[poolIndex].SetActive(true);
+        if (firstKrlm)
+        {
+            Balls[poolIndex].transform.SetParent(BallThrower.transform);
+            Balls[poolIndex].transform.position = BallSocket.transform.position;
+            Balls[poolIndex].SetActive(true);
+            SelectedBall = Balls[poolIndex];
+
+            poolIndex++;
+            Balls[poolIndex].transform.position = NextBall.transform.position;
+            Balls[poolIndex].SetActive(true);
+            ktsText.text = ktsys.ToString();
+        }
+        else
+        {
+            if (Balls.Length!=0)
+            {
+                Balls[poolIndex].transform.SetParent(BallThrower.transform);
+                Balls[poolIndex].transform.position = BallSocket.transform.position;
+                Balls[poolIndex].SetActive(true);
+                SelectedBall = Balls[poolIndex];
+
+                ktsys--;
+                ktsText.text = ktsys.ToString();
+
+                if (poolIndex == Balls.Length-1)
+                {
+                    Debug.Log("It is Over");
+                }
+                else
+                {
+                    poolIndex++;
+                    Balls[poolIndex].transform.position = NextBall.transform.position;
+                    Balls[poolIndex].SetActive(true);
+                }
+            }
+        }
+
+       
+
     }
 }
