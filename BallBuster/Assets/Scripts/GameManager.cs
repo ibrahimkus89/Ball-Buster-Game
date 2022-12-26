@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Sprite[] spriteObjects;
+    [SerializeField] private GameObject[] Balls;
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         
