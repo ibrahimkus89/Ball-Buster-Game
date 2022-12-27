@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("---Level Settings")]
     public Sprite[] spriteObjects;
     [SerializeField] private GameObject[] Balls;
     [SerializeField] private TextMeshProUGUI ktsText;
     private int ktsys;
     private int poolIndex;
+
+    [Header("---Other Objects")] [SerializeField]
+    private ParticleSystem bombEffect;
+
+
+
 
     [Header("---Ball Shooting System")]
     [SerializeField] private GameObject BallThrower;
@@ -97,5 +102,13 @@ public class GameManager : MonoBehaviour
 
        
 
+    }
+
+
+    public void BombEffect(Vector2 position)
+    {
+        bombEffect.gameObject.transform.position = position;
+        bombEffect.gameObject.SetActive(true);
+        bombEffect.Play();
     }
 }
