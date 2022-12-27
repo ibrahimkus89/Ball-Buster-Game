@@ -3,6 +3,29 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
+using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
+
+
+[Serializable]
+public class Targets
+{
+    public Sprite TargetImage;
+    public int BallValue;
+    public GameObject MissonCompleted;
+    public string TargetType;
+}
+
+[Serializable]
+public class Targets_UI
+{
+    public GameObject Target;
+    public  Image TargetImage;
+    public TextMeshProUGUI TargetValueText;
+    public GameObject MissonCompleted;
+
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -28,12 +51,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject NextBall;
     private GameObject SelectedBall;
 
-
+    [Header("---Mission Process")]
+    [SerializeField] private List<Targets_UI> Targets_UI;
+    [SerializeField] private List<Targets> Targets;
 
     void Start()
     {
         ktsys = Balls.Length;
         BringTheBall(true);
+
+        for (int i = 0; i < Targets.Count; i++)
+        {
+            Targets_UI[i].Target.SetActive(true);
+            Targets_UI[i].TargetImage.sprite = Targets[i].TargetImage;
+            Targets_UI[i].TargetValueText.text = Targets[i].BallValue.ToString();
+
+        }
     }
 
     
