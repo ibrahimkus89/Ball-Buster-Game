@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,12 @@ public class GameManager : MonoBehaviour
     private int ktsys;
     private int poolIndex;
 
-    [Header("---Other Objects")] [SerializeField]
-    private ParticleSystem bombEffect;
+    [Header("---Other Objects")] 
+    [SerializeField] private ParticleSystem bombEffect;
+    [SerializeField] private ParticleSystem[] boxExplosionEffects;
+    private int BoxExplosionEffectIndex;
+
+
 
 
 
@@ -110,5 +115,24 @@ public class GameManager : MonoBehaviour
         bombEffect.gameObject.transform.position = position;
         bombEffect.gameObject.SetActive(true);
         bombEffect.Play();
+    }
+
+    public void BoxPrcEffect(Vector2 position)
+    {
+        
+
+        boxExplosionEffects[BoxExplosionEffectIndex].gameObject.transform.position = position;
+        boxExplosionEffects[BoxExplosionEffectIndex].gameObject.SetActive(true);
+        bombEffect.Play();
+        BoxExplosionEffectIndex++;
+
+        if (BoxExplosionEffectIndex==boxExplosionEffects.Length-1)
+        {
+            BoxExplosionEffectIndex = 0;
+        }
+        else
+        {
+            BoxExplosionEffectIndex++;
+        }
     }
 }

@@ -32,8 +32,16 @@ public class Bomb : MonoBehaviour
 
         foreach (var item in colliders)
         {
-            item.gameObject.GetComponent<Rigidbody2D>().AddForce(90 * new  Vector2(0,6),ForceMode2D.Force);
+            if (item.gameObject.CompareTag("Box"))
+            {
+                item.GetComponent<Box>().PlayEffect();
+            }
+            else
+                item.gameObject.GetComponent<Rigidbody2D>().AddForce(90 * new Vector2(0, 6), ForceMode2D.Force);
+
         }
+
+    }
     }
     
-}
+
