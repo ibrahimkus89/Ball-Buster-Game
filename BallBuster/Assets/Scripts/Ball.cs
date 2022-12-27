@@ -13,10 +13,16 @@ public class Ball : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
 
     private bool primary;
-
+    [SerializeField] private bool DefaultBall; 
     void Start()
     {
         numberText.text = number.ToString();
+
+        if (DefaultBall)
+        {
+            primary =true;
+            
+        }
     }
 
     void SetStatus()
