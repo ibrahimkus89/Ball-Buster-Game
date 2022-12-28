@@ -149,14 +149,9 @@ public class GameManager : MonoBehaviour
 
             if (ktsys==0)
             {
-                if (TotalNumberOfMission==0)
-                {
-                    Win();
-                }
-                else
-                {
-                    Lost();
-                }
+                Invoke("TaskControl",3f);
+
+                
             }
         }
 
@@ -189,15 +184,16 @@ public class GameManager : MonoBehaviour
             {
                 Targets_UI[1].MissonCompleted.SetActive(true);
 
+                TotalNumberOfMission--;
+
+                if (TotalNumberOfMission == 0)
+                {
+                    Win();
+
+                }
             }
 
-            TotalNumberOfMission--;
-
-            if (TotalNumberOfMission == 0)
-            {
-                Win();
-
-            }
+           
         }
 
         if (BoxExplosionEffectIndex==boxExplosionEffects.Length-1)
@@ -234,5 +230,17 @@ public class GameManager : MonoBehaviour
     public void Lost()
     {
         Debug.Log("You Lost");
+    }
+
+    void TaskControl()
+    {
+        if (TotalNumberOfMission == 0)
+        {
+            Win();
+        }
+        else
+        {
+            Lost();
+        }
     }
 }
