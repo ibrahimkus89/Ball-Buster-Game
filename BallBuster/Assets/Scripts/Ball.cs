@@ -80,6 +80,12 @@ public class Ball : MonoBehaviour
                  
             }
 
+            if (_GameManager.isTh)
+            {
+              _GameManager.MissonControl(number);
+
+            }
+
             primary =false;
             Invoke("SetStatus",2f);
         }
@@ -126,6 +132,12 @@ public class Ball : MonoBehaviour
                 case 2048:
                     _renderer.sprite = _GameManager.spriteObjects[8];
                     break;
+
+            }
+
+            if (_GameManager.isTh)
+            {
+                _GameManager.MissonControl(number);
 
             }
 

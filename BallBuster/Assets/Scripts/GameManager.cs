@@ -54,11 +54,14 @@ public class GameManager : MonoBehaviour
     [Header("---Mission Process")]
     [SerializeField] private List<Targets_UI> Targets_UI;
     [SerializeField] private List<Targets> Targets;
-
+    private int BallValue, BoxValue, TotalNumberOfMission;
+    private bool isKh;
+    public bool isTh;
     void Start()
     {
         ktsys = Balls.Length;
         BringTheBall(true);
+        TotalNumberOfMission = Targets.Count;
 
         for (int i = 0; i < Targets.Count; i++)
         {
@@ -66,6 +69,15 @@ public class GameManager : MonoBehaviour
             Targets_UI[i].TargetImage.sprite = Targets[i].TargetImage;
             Targets_UI[i].TargetValueText.text = Targets[i].BallValue.ToString();
 
+            if (Targets[i].TargetType=="Ball")
+            {
+                isTh=true;
+                BallValue = Targets[i].BallValue;
+            }else if (Targets[i].TargetType=="Box")
+            {
+                isKh=true;
+                BoxValue= Targets[i].BallValue;
+            }
         }
     }
 
@@ -125,15 +137,25 @@ public class GameManager : MonoBehaviour
                 ktsys--;
                 ktsText.text = ktsys.ToString();
 
-                if (poolIndex == Balls.Length-1)
-                {
-                    Debug.Log("It is Over");
-                }
-                else
+                if (poolIndex != Balls.Length-1)
                 {
                     poolIndex++;
                     Balls[poolIndex].transform.position = NextBall.transform.position;
                     Balls[poolIndex].SetActive(true);
+
+                }
+               
+            }
+
+            if (ktsys==0)
+            {
+                if (TotalNumberOfMission==0)
+                {
+                    Win();
+                }
+                else
+                {
+                    Lost();
                 }
             }
         }
@@ -157,7 +179,26 @@ public class GameManager : MonoBehaviour
         boxExplosionEffects[BoxExplosionEffectIndex].gameObject.transform.position = position;
         boxExplosionEffects[BoxExplosionEffectIndex].gameObject.SetActive(true);
         bombEffect.Play();
-        BoxExplosionEffectIndex++;
+        //BoxExplosionEffectIndex++;
+
+        if (isKh)
+        {
+            BoxValue--;
+
+            if (BoxValue==0)
+            {
+                Targets_UI[1].MissonCompleted.SetActive(true);
+
+            }
+
+            TotalNumberOfMission--;
+
+            if (TotalNumberOfMission == 0)
+            {
+                Win();
+
+            }
+        }
 
         if (BoxExplosionEffectIndex==boxExplosionEffects.Length-1)
         {
@@ -167,5 +208,31 @@ public class GameManager : MonoBehaviour
         {
             BoxExplosionEffectIndex++;
         }
+    }
+
+    public void MissonControl(int number)
+    {
+        if (number==BallValue)
+        {
+            Targets_UI[0].MissonCompleted.SetActive(true);
+
+            TotalNumberOfMission--;
+
+            if (TotalNumberOfMission == 0)
+            {
+                Win();
+
+            }
+        }
+    }
+
+    public void Win()
+    {
+        Debug.Log("You Win");
+    }
+
+    public void Lost()
+    {
+        Debug.Log("You Lost");
     }
 }
