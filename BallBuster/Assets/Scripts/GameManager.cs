@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using System;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
+using UnityEngine.SceneManagement;
 
 
 [Serializable]
@@ -29,6 +30,7 @@ public class Targets_UI
 
 public class GameManager : MonoBehaviour
 {
+    [Header("---Level Settings")]
     public Sprite[] spriteObjects;
     [SerializeField] private GameObject[] Balls;
     [SerializeField] private TextMeshProUGUI ktsText;
@@ -231,6 +233,8 @@ public class GameManager : MonoBehaviour
     public void Win()
     {
         PlaySound(4);
+        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
+        UItexts[0].text = "LEVEL : " + SceneManager.GetActiveScene().name;
         GnlPanels[0].SetActive(true);
         Time.timeScale = 0;
     }
@@ -238,6 +242,7 @@ public class GameManager : MonoBehaviour
     public void Lost()
     { 
         PlaySound(3);
+        UItexts[1].text = "LEVEL : " + SceneManager.GetActiveScene().name;
         GnlPanels[1].SetActive(true);
         Time.timeScale = 0;
     }
@@ -257,5 +262,27 @@ public class GameManager : MonoBehaviour
     public void PlaySound(int Index)
     {
         Sounds[Index].Play();
+    }
+
+    public void ButtonProcess(string Valuee)
+    {
+        switch (Valuee)
+        {
+            case "Try Again":
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Time.timeScale = 1;
+                break;
+            case "NextLevel":
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+                Time.timeScale = 1;
+                break;
+            case "Settings":
+                // you can make settings panel >> optional
+            break;
+            case "Quit":
+                Application.Quit();
+                Debug.Log("Quit");
+                break;
+        }
     }
 }
