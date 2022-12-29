@@ -13,7 +13,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
 
     private bool primary;
-    [SerializeField] private bool DefaultBall; 
+    [SerializeField] private bool DefaultBall;
+
+    private AudioSource _AudioSource;
     void Start()
     {
         numberText.text = number.ToString();
@@ -22,6 +24,10 @@ public class Ball : MonoBehaviour
         {
             primary =true;
             
+        }
+        else
+        {
+            _AudioSource=GetComponent<AudioSource>();
         }
     }
 
@@ -45,7 +51,8 @@ public class Ball : MonoBehaviour
             number += number;
             gameObject.tag = number.ToString();
             numberText.text = number.ToString();
-            // sprite change
+            
+            _GameManager.PlaySound(2); // same number
 
             switch (number)
             {
@@ -93,6 +100,11 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (_AudioSource!=null && gameObject.activeSelf)
+        {
+            _AudioSource.Play();
+        }
+
         if (collision.gameObject.CompareTag(number.ToString()) && primary)
         {
             BrlEffect.Play();
@@ -100,7 +112,7 @@ public class Ball : MonoBehaviour
             number += number;
             gameObject.tag = number.ToString();
             numberText.text = number.ToString();
-            // sprite change
+           _GameManager.PlaySound(2);
 
             switch (number)
             {

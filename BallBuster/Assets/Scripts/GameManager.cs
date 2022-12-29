@@ -39,10 +39,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ParticleSystem bombEffect;
     [SerializeField] private ParticleSystem[] boxExplosionEffects;
     private int BoxExplosionEffectIndex;
-
-
-
-
+    [SerializeField] private AudioSource[] Sounds;
 
 
     [Header("---Ball Shooting System")]
@@ -57,6 +54,13 @@ public class GameManager : MonoBehaviour
     private int BallValue, BoxValue, TotalNumberOfMission;
     private bool isKh;
     public bool isTh;
+
+    [Header("---UI Objects")] 
+    [SerializeField] private GameObject[] GnlPanels;
+    [SerializeField] private TextMeshProUGUI[] UItexts;
+
+
+
     void Start()
     {
         ktsys = Balls.Length;
@@ -165,6 +169,7 @@ public class GameManager : MonoBehaviour
         bombEffect.gameObject.transform.position = position;
         bombEffect.gameObject.SetActive(true);
         bombEffect.Play();
+        Sounds[0].Play();
     }
 
     public void BoxPrcEffect(Vector2 position)
@@ -178,6 +183,7 @@ public class GameManager : MonoBehaviour
 
         if (isKh)
         {
+            Sounds[1].Play();
             BoxValue--;
 
             if (BoxValue==0)
@@ -193,7 +199,6 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-           
         }
 
         if (BoxExplosionEffectIndex==boxExplosionEffects.Length-1)
@@ -210,6 +215,7 @@ public class GameManager : MonoBehaviour
     {
         if (number==BallValue)
         {
+            Sounds[1].Play();
             Targets_UI[0].MissonCompleted.SetActive(true);
 
             TotalNumberOfMission--;
@@ -224,12 +230,16 @@ public class GameManager : MonoBehaviour
 
     public void Win()
     {
-        Debug.Log("You Win");
+        PlaySound(4);
+        GnlPanels[0].SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void Lost()
-    {
-        Debug.Log("You Lost");
+    { 
+        PlaySound(3);
+        GnlPanels[1].SetActive(true);
+        Time.timeScale = 0;
     }
 
     void TaskControl()
@@ -242,5 +252,10 @@ public class GameManager : MonoBehaviour
         {
             Lost();
         }
+    }
+
+    public void PlaySound(int Index)
+    {
+        Sounds[Index].Play();
     }
 }
